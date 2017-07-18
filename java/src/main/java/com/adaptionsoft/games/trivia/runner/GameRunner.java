@@ -4,8 +4,7 @@ package com.adaptionsoft.games.trivia.runner;
 import java.util.Random;
 
 import com.adaptionsoft.games.uglytrivia.Game;
-import com.adaptionsoft.games.uglytrivia.Player;
-
+import com.adaptionsoft.games.uglytrivia.player.Player;
 
 public class GameRunner {
 
@@ -33,7 +32,7 @@ public class GameRunner {
             if (rand.nextInt(9) == 7) {
                 notAWinner = aGame.wrongAnswer();
             } else {
-                notAWinner = aGame.wasCorrectlyAnswered();
+                notAWinner = aGame.wasCorrectlyAnswered(new Player.Builder().build());
             }
 
 

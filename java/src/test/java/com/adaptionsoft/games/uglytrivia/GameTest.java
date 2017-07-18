@@ -1,5 +1,6 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.player.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GameTest {
 
     private Game game;
-    private List players;
+    private List<Player> players;
     private int[] placesInGame;
     private int[] amountOfGold;
     boolean[] inPenaltyBox;
@@ -27,7 +28,7 @@ public class GameTest {
     @Before
     public void setUp() {
         game = new Game();
-        players = new ArrayList();
+        players = new ArrayList<>();
         placesInGame = new int[6];
         amountOfGold = new int[6];
         inPenaltyBox = new boolean[6];

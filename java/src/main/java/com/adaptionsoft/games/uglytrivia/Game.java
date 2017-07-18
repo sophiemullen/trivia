@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.player.Player;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,7 +9,6 @@ import java.util.List;
 public class Game {
     List<Player> players = new ArrayList<>();
     int[] places = new int[6];
-    int[] purses  = new int[6];
     boolean[] inPenaltyBox  = new boolean[6];
     
     LinkedList popQuestions = new LinkedList();
@@ -35,17 +36,19 @@ public class Game {
 		return (howManyPlayers() >= 2);
 	}
 
+	// playerS logic
 	public boolean add(Player player) {
 	    players.add(player);
 	    places[howManyPlayers()] = 0;
-	    purses[howManyPlayers()] = 0;
+	    player.setAmountOfCoins(0);
 	    inPenaltyBox[howManyPlayers()] = false;
 	    
 	    System.out.println(player.getName() + " was added");
 	    System.out.println("They are player number " + players.size());
 		return true;
 	}
-	
+
+	// playerS logic
 	public int howManyPlayers() {
 		return players.size();
 	}
@@ -85,6 +88,7 @@ public class Game {
 		}
 	}
 
+	// question logic
 	private void askQuestion() {
 		if (currentCategory() == "Pop")
 			System.out.println(popQuestions.removeFirst());
@@ -95,7 +99,8 @@ public class Game {
 		if (currentCategory() == "Rock")
 			System.out.println(rockQuestions.removeFirst());		
 	}
-	
+
+	// question logic
 	private String currentCategory() {
 		if (places[currentPlayer] == 0) return "Pop";
 		if (places[currentPlayer] == 4) return "Pop";
@@ -109,17 +114,19 @@ public class Game {
 		return "Rock";
 	}
 
-	public boolean wasCorrectlyAnswered() {
-		if (inPenaltyBox[currentPlayer]){
+	public boolean wasCorrectlyAnswered(Player player) {
+		int playerCoins = player.getAmountOfCoins();
+
+		if (inPenaltyBox[player.getIndex()]){
 			if (isGettingOutOfPenaltyBox) {
 				System.out.println("Answer was correct!!!!");
-				purses[currentPlayer]++;
-				System.out.println(players.get(currentPlayer) 
+				player.setAmountOfCoins(playerCoins++);
+				System.out.println(players.get(currentPlayer)
 						+ " now has "
-						+ purses[currentPlayer]
+						+ player.getAmountOfCoins()
 						+ " Gold Coins.");
 				
-				boolean winner = didPlayerWin();
+				boolean winner = didPlayerWin(player);
 				currentPlayer++;
 				if (currentPlayer == players.size()) currentPlayer = 0;
 				
@@ -131,13 +138,13 @@ public class Game {
 			}
 		} else {
 			System.out.println("Answer was corrent!!!!");
-			purses[currentPlayer]++;
+			player.setAmountOfCoins(playerCoins++);
 			System.out.println(players.get(currentPlayer) 
 					+ " now has "
-					+ purses[currentPlayer]
+					+ player.getAmountOfCoins()
 					+ " Gold Coins.");
 			
-			boolean winner = didPlayerWin();
+			boolean winner = didPlayerWin(player);
 			currentPlayer++;
 			if (currentPlayer == players.size()) currentPlayer = 0;
 			
@@ -155,8 +162,8 @@ public class Game {
 		return true;
 	}
 
-
-	private boolean didPlayerWin() {
-		return !(purses[currentPlayer] == 6);
+	// move to person
+	private boolean didPlayerWin(Player player) {
+		return !(player.getAmountOfCoins() == 6);
 	}
 }
