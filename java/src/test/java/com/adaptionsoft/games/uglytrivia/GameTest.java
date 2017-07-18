@@ -1,6 +1,5 @@
 package com.adaptionsoft.games.uglytrivia;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GameTest {
@@ -24,6 +22,7 @@ public class GameTest {
     private LinkedList rockQuestions;
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
+    Player player1, player2;
 
     @Before
     public void setUp() {
@@ -31,11 +30,18 @@ public class GameTest {
         players = new ArrayList();
         placesInGame = new int[6];
         amountOfGold = new int[6];
-        inPenaltyBox  = new boolean[6];
+        inPenaltyBox = new boolean[6];
         popQuestions = new LinkedList();
         scienceQuestions = new LinkedList();
         sportsQuestions = new LinkedList();
         rockQuestions = new LinkedList();
+
+        player1 = new Player.Builder()
+                .withName("sophie")
+                .build();
+        player2 = new Player.Builder()
+                .withName("yannick")
+                .build();
     }
 
     @Test
@@ -45,15 +51,18 @@ public class GameTest {
 
     @Test
     public void isPlayable_whenTooFewPlayers_returnsFalse() {
-        String player1 = "sophie";
         game.add(player1);
         assertThat(game.isPlayable()).isFalse();
     }
 
     @Test
     public void isPlayable_whenEnoughPlayers_returnsTrue() {
-        String player1 = "sophie";
-        String player2 = "yannick";
+        Player player1 = new Player.Builder()
+                .withName("sophie")
+                .build();
+        Player player2 = new Player.Builder()
+                .withName("yannick")
+                .build();
         game.add(player1);
         game.add(player2);
         System.out.println(game.howManyPlayers());
@@ -62,13 +71,11 @@ public class GameTest {
 
     @Test
     public void add_whenPlayerAdded_returnsTrue() {
-        String player1 = "sophie";
         assertThat(game.add(player1)).isTrue();
     }
 
     @Test
     public void howManyPlayers_returnsCorrectNumberOfPlayers() {
-        String player1 = "sophie";
         game.add(player1);
         assertThat(game.howManyPlayers()).isEqualTo(1);
     }
@@ -88,7 +95,6 @@ public class GameTest {
 
     @Test
     public void wrongAnswer_alwaysReturnsTrue() {
-        String player1 = "sophie";
         game.add(player1);
         assertThat(game.wrongAnswer()).isTrue();
     }
